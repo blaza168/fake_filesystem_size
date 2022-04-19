@@ -9,6 +9,7 @@ namespace fs = std::filesystem;
 
 unsigned short counter = 0;
 
+// Returns size of the file in bytes
 unsigned long get_file_size(string path) {
     unsigned long size;
     try {
@@ -22,6 +23,7 @@ unsigned long get_file_size(string path) {
     return size;
 }
 
+// function for printing to STDOUT
 void print(string path, unsigned long long size) {
     string size_str = std::to_string(size);
     string spaces = "";
@@ -35,6 +37,7 @@ void print(string path, unsigned long long size) {
     std::cout << size_str << spaces << path << endl;
 }
 
+// Function for recursive directory iteration
 unsigned long long iterate_directory(string dir) {
     unsigned long long size = 0;
     try {
@@ -44,10 +47,10 @@ unsigned long long iterate_directory(string dir) {
                 print(p.path(), tmp_size);
             } else if (fs::is_regular_file(p.path())) {
                 counter++;
-                if (counter == 14) {
+                if (counter == 14) { // calculate only every 14th file
                     counter = 0;
                     unsigned long tmp_size = get_file_size(p.path());
-                    if (tmp_size >= 1000000000 && tmp_size > 0) {
+                    if (tmp_size >= 1000000000) {
                         continue; // Skip garbage files
                     }
                     print(p.path(), tmp_size);
